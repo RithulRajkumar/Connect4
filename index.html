@@ -7,15 +7,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/8.0.5/pixi.min.js"></script>
 </head>
 
-<body style="margin:0; background:#222;">
+<body style="margin:0; background:#261579;">
     <script>
         async function main() {
             const app = new PIXI.Application();
-            await app.init({ width: 800, height: 600, background: 0x11f9bd });
+            await app.init({ width: 800, height: 600, background: 0x261579 });
             document.body.appendChild(app.canvas);
-            const radius = 60;
-            var circle = createCircle(radius, 200, 200);
-            app.stage.addChild(circle);
+            const radius = 30;
+            const xoffset = 70;
+            const yoffset = 70;
+            const space = 15;
+            for (let row = 0; row < 7; row++) {
+                for (let col = 0; col < 6; col++) {
+                    var circle = createCircle(radius, xoffset + row * 70, yoffset+col*70, 0xffffff);
+                    app.stage.addChild(circle);
+                }
+            }
+
         }
         function createCircle(radius, x, y, color = 0xff0000, borderColor = 0xffffff, borderWidth = 5) {
             const circle = new PIXI.Graphics();
