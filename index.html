@@ -1,11 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
     <title>Connect 4</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/8.0.5/pixi.min.js"></script>
 </head>
-<body>
-    
+
+<body style="margin:0; background:#222;">
+    <script>
+        async function main() {
+            const app = new PIXI.Application();
+            await app.init({ width: 800, height: 600, background: 0x11f9bd });
+            document.body.appendChild(app.canvas);
+            const radius = 60;
+            // const circle = new PIXI.Graphics();
+            // circle.beginFill(0xff0000);
+            // circle.lineStyle(5, 0xffffff);
+            // circle.drawCircle(0, 0, radius);
+            // circle.endFill();
+            // circle.x = 100;
+            // circle.y = 100;
+            var circle = createCircle(radius, 200, 200);
+            app.stage.addChild(circle);
+        }
+        function createCircle(radius, x, y, color = 0xff0000, borderColor = 0xffffff, borderWidth = 5) {
+            const circle = new PIXI.Graphics();
+            circle.beginFill(color);
+            circle.lineStyle(borderWidth, borderColor);
+            circle.drawCircle(0, 0, radius);
+            circle.endFill();
+
+            circle.x = x;
+            circle.y = y;
+
+            return circle;
+        }
+
+
+        main();
+    </script>
+
 </body>
+
 </html>
