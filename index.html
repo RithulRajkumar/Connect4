@@ -19,9 +19,24 @@
             const space = 15;
             for (let row = 0; row < 7; row++) {
                 for (let col = 0; col < 6; col++) {
-                    var circle = createCircle(radius, xoffset + row * 70, yoffset+col*70, 0xffffff);
+                    var circle = createCircle(radius, xoffset + row * 70, yoffset + col * 70, 0xffffff);
                     app.stage.addChild(circle);
                 }
+            }
+
+            // Create a Pixi text style
+            const style = new PIXI.TextStyle({
+                fill: 0xffffff,       // white text
+                fontSize: 20,
+                fontFamily: 'Arial'
+            });
+            // Loop to place numbers under each column
+            for (let col = 0; col < 7; col++) {
+                const number = new PIXI.Text(col + 1, style); // number starts at 1
+                number.x = xoffset + col * 70;
+                number.y = yoffset + 370 + radius + 10; // just below the last row
+                number.anchor.set(0.5, 0); // center horizontally
+                app.stage.addChild(number);
             }
 
         }
