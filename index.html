@@ -14,13 +14,6 @@
             await app.init({ width: 800, height: 600, background: 0x11f9bd });
             document.body.appendChild(app.canvas);
             const radius = 60;
-            // const circle = new PIXI.Graphics();
-            // circle.beginFill(0xff0000);
-            // circle.lineStyle(5, 0xffffff);
-            // circle.drawCircle(0, 0, radius);
-            // circle.endFill();
-            // circle.x = 100;
-            // circle.y = 100;
             var circle = createCircle(radius, 200, 200);
             app.stage.addChild(circle);
         }
