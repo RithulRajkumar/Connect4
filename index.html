@@ -9,17 +9,37 @@
 
 <body style="margin:0; background:#261579;">
     <script>
+        //Set up board
+        const radius = 30;
+        const xoffset = 70;
+        const yoffset = 70;
+        const space = 15;
+        const white = 0xffffff;
+        const player1 = 0xff0000;
+        const player2 = 0xffff00;
+        const rows = 6;
+        const cols = 7;
+        let currentPlayer = 1
+        let board = Array.from({ length: rows }, () => Array(cols).fill(0));
+        console.log(board);
+        const app = new PIXI.Application();
         async function main() {
-            const app = new PIXI.Application();
             await app.init({ width: 800, height: 600, background: 0x261579 });
             document.body.appendChild(app.canvas);
-            const radius = 30;
-            const xoffset = 70;
-            const yoffset = 70;
-            const space = 15;
-            for (let row = 0; row < 7; row++) {
-                for (let col = 0; col < 6; col++) {
-                    var circle = createCircle(radius, xoffset + row * 70, yoffset + col * 70, 0xffffff);
+            drawGame();
+        }
+        function drawGame() {
+            for (let col = 0; col < 7; col++) {
+                for (let row = 0; row < 6; row++) {
+                    //Check if current position is player1, player2 or empty
+                    var color = white
+                    var val = board[row][col];
+
+                    if (val == 1)
+                        color = player1;
+                    else if (val == 2)
+                        color = player2;
+                    var circle = createCircle(radius, xoffset + col * 70, yoffset + row * 70, color);
                     app.stage.addChild(circle);
                 }
             }
@@ -51,9 +71,32 @@
             circle.y = y;
 
             return circle;
+
         }
 
+        // Listen for key press
+        window.addEventListener("keyup", function (event) {
+            if (event.key < 1 || event.key > 7)
+                return;
+            var rowIndex = rows - 1;
+            //Finding correct rowIndex
+            for (let i = 0; i < rows; i++) {
+                if (board[i][event.key - 1] > 0) {
+                    rowIndex = i - 1;
+                    break;
+                }
+            }
 
+
+            board[rowIndex][event.key - 1] = currentPlayer;
+            if (currentPlayer == 1)
+                currentPlayer = 2;
+            else if (currentPlayer == 2)
+                currentPlayer = 1;
+            console.log("Key pressed:", event.key); // prints the key (like "a", "ArrowUp")
+            //console.log("Key code:", event.code);   // prints physical key (like "KeyA", "ArrowUp")
+            drawGame();
+        });
         main();
     </script>
 
