@@ -29,6 +29,7 @@
             drawGame();
         }
         function drawGame() {
+            app.stage.removeChildren().forEach(c => c.destroy());
             for (let col = 0; col < 7; col++) {
                 for (let row = 0; row < 6; row++) {
                     //Check if current position is player1, player2 or empty
