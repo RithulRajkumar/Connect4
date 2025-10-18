@@ -19,7 +19,7 @@
         const player2 = 0xffff00;
         const rows = 6;
         const cols = 7;
-        let currentPlayer = 1
+        let currentPlayer = 1;
         let board = Array.from({ length: rows }, () => Array(cols).fill(0));
         console.log(board);
         const app = new PIXI.Application();
@@ -27,6 +27,61 @@
             await app.init({ width: 800, height: 600, background: 0x261579 });
             document.body.appendChild(app.canvas);
             drawGame();
+        }
+        function findWinner() {
+            verticalCheck();
+            horizontalCheck();
+        }
+        function verticalCheck() {
+
+            for (let col = 0; col < cols; col++) {
+                var player = 0;
+                var count = 0;
+                for (let row = 0; row < rows; row++) {
+                    var val = board[row][col];
+                    if (val != 0 && player == 0) {
+                        player = val;
+                        count++;
+                    }
+                    else if (val != 0 && val == player) {
+                        count++;
+                    }
+                    else {
+                        count = 0
+                    }
+                }
+                if (count == 4) {
+                    alert('Player' + player + 'won');
+                    return;
+                }
+            }
+
+        }
+        function horizontalCheck() {
+
+            for (let row = 0; row < rows; row++) {
+                var player = 0;
+                var count = 0;
+                for (let col = 0; col < cols; col++) {
+                    var val = board[row][col];
+                    if (val != 0 && player == 0) {
+                        player = val;
+                        count++;
+                    }
+                    else if (val != 0 && val == player) {
+                        count++;
+                    }
+                    else {
+                        count = 0
+                    }
+                    if (count == 4) {
+                        alert('Player' + player + 'won');
+                        return;
+                    }
+                }
+
+            }
+
         }
         function drawGame() {
             app.stage.removeChildren().forEach(c => c.destroy());
@@ -82,8 +137,7 @@
         }
 
         function play(colIndex) {
-            var rowIndex = rows - 1;
-            var colIndex = event.key - 1;
+            var rowIndex = rows - 1;;
             for (let i = 0; i < rows; i++) {
                 if (board[i][colIndex] > 0) {
                     rowIndex = i - 1;
@@ -96,16 +150,23 @@
             else if (currentPlayer == 2)
                 currentPlayer = 1;
             drawGame();
+
+            // Wait one animation frame to let Pixi render
+            requestAnimationFrame(() => {
+                app.renderer.render(app.stage); // force a frame render (optional)
+                // Then wait another small tick for browser to display it
+                setTimeout(() => {
+                    findWinner();
+                }, 0);
+            });
+
         }
 
-        // Listen for key press
+        // Listen for key up
         window.addEventListener("keyup", function (event) {
             if (event.key < 1 || event.key > 7)
                 return;
-
-            //Finding correct rowIndex
-
-            play(rowIndex, colIndex);
+            play(event.key - 1);
         });
         main();
     </script>
