@@ -40,7 +40,7 @@
                         color = player1;
                     else if (val == 2)
                         color = player2;
-                    var circle = createCircle(radius, xoffset + col * 70, yoffset + row * 70, color);
+                    var circle = createCircle(row, col, radius, xoffset + col * 70, yoffset + row * 70, color);
                     app.stage.addChild(circle);
                 }
             }
@@ -61,7 +61,7 @@
             }
 
         }
-        function createCircle(radius, x, y, color = 0xff0000, borderColor = 0xffffff, borderWidth = 5) {
+        function createCircle(row, col, radius, x, y, color = 0xff0000, borderColor = 0xffffff, borderWidth = 5) {
             const circle = new PIXI.Graphics();
             circle.beginFill(color);
             circle.lineStyle(borderWidth, borderColor);
@@ -71,32 +71,41 @@
             circle.x = x;
             circle.y = y;
 
+            circle.interactive = true;
+            circle.buttonMode = true;
+            circle.on('pointerdown', () => {
+                play(col);
+            });
+
             return circle;
 
+        }
+
+        function play(colIndex) {
+            var rowIndex = rows - 1;
+            var colIndex = event.key - 1;
+            for (let i = 0; i < rows; i++) {
+                if (board[i][colIndex] > 0) {
+                    rowIndex = i - 1;
+                    break;
+                }
+            }
+            board[rowIndex][colIndex] = currentPlayer;
+            if (currentPlayer == 1)
+                currentPlayer = 2;
+            else if (currentPlayer == 2)
+                currentPlayer = 1;
+            drawGame();
         }
 
         // Listen for key press
         window.addEventListener("keyup", function (event) {
             if (event.key < 1 || event.key > 7)
                 return;
-            var rowIndex = rows - 1;
+
             //Finding correct rowIndex
-            for (let i = 0; i < rows; i++) {
-                if (board[i][event.key - 1] > 0) {
-                    rowIndex = i - 1;
-                    break;
-                }
-            }
 
-
-            board[rowIndex][event.key - 1] = currentPlayer;
-            if (currentPlayer == 1)
-                currentPlayer = 2;
-            else if (currentPlayer == 2)
-                currentPlayer = 1;
-            console.log("Key pressed:", event.key); // prints the key (like "a", "ArrowUp")
-            //console.log("Key code:", event.code);   // prints physical key (like "KeyA", "ArrowUp")
-            drawGame();
+            play(rowIndex, colIndex);
         });
         main();
     </script>
