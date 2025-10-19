@@ -5,10 +5,13 @@
     <meta charset="utf-8" />
     <title>Connect 4</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/8.0.5/pixi.min.js"></script>
+    
 </head>
 
 <body style="margin:0; background:#261579;">
-    <script>
+    <script type="module">
+         import { verticalCheck, horizontalCheck, diagonalCheck } from './findwinner.js';
+
         //Set up board
         const radius = 30;
         const xoffset = 70;
@@ -29,60 +32,24 @@
             drawGame();
         }
         function findWinner() {
-            verticalCheck();
-            horizontalCheck();
-        }
-        function verticalCheck() {
-
-            for (let col = 0; col < cols; col++) {
-                var player = 0;
-                var count = 0;
-                for (let row = 0; row < rows; row++) {
-                    var val = board[row][col];
-                    if (val != 0 && player == 0) {
-                        player = val;
-                        count++;
-                    }
-                    else if (val != 0 && val == player) {
-                        count++;
-                    }
-                    else {
-                        count = 0
-                    }
-                }
-                if (count == 4) {
-                    alert('Player' + player + 'won');
-                    return;
-                }
+            var player = verticalCheck(cols, rows, board);
+            if (player !== 0) {
+                alert('player ' + player + ' is the winner');
             }
-
-        }
-        function horizontalCheck() {
-
-            for (let row = 0; row < rows; row++) {
-                var player = 0;
-                var count = 0;
-                for (let col = 0; col < cols; col++) {
-                    var val = board[row][col];
-                    if (val != 0 && player == 0) {
-                        player = val;
-                        count++;
-                    }
-                    else if (val != 0 && val == player) {
-                        count++;
-                    }
-                    else {
-                        count = 0
-                    }
-                    if (count == 4) {
-                        alert('Player' + player + 'won');
-                        return;
-                    }
-                }
-
+            player = horizontalCheck(cols, rows, board);
+            if (player !== 0) {
+                alert('player ' + player + ' is the winner');
             }
-
+            var player = diagonalCheck(cols, rows, board);
+            if (player !== 0) {
+                alert('player ' + player + ' is the winner');
+            }
         }
+
+
+
+        
+
         function drawGame() {
             app.stage.removeChildren().forEach(c => c.destroy());
             for (let col = 0; col < 7; col++) {
